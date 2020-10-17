@@ -90,3 +90,37 @@ def build_features(data):
     return pd.concat([pd.DataFrame(features_list).reset_index(drop=True),
                       df_par.reset_index(drop=True)],
                      axis=1, sort=False)
+
+
+# Read input data from data_dir into pandas DataFrame and retrieve sherlock features.
+def get_input_data_features(data_dir):
+    
+    df = pd.DataFrame
+    
+    if "excel" in data_dir:
+        df = pd.read_excel(data_dir)
+    else if "csv" in data_dir:
+        df = pd.read_csv(data_dir)
+        
+    df = df.T
+    
+    '''
+    df.head():
+        
+    Id FirstName LastName           Email        Phone
+    0  12345   Richard    Smith  rsmith@abc.com    111111111
+    1  67890    Morgan     Hart  morgan@bac.com  22222222222
+    
+    ------------------------------------------------------------
+    
+    df.T.head():
+                            0               1
+    Id                  12345           67890
+    FirstName         Richard          Morgan
+    LastName            Smith            Hart
+    Email      rsmith@abc.com  morgan@bac.com
+    Phone           111111111     22222222222    
+
+    '''
+    
+    return build_features(df)
